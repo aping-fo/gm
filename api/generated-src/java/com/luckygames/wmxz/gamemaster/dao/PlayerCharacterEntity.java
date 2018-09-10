@@ -50,6 +50,10 @@ public class PlayerCharacterEntity extends BaseEntity {
 
     private Long usedCoin;
 
+    private Integer operateStatus;
+
+    private Integer packageId;
+
     public Long getPlayerId() {
         return playerId;
     }
@@ -224,5 +228,21 @@ public class PlayerCharacterEntity extends BaseEntity {
 
     public void setUsedCoin(Long usedCoin) {
         this.usedCoin = usedCoin;
+    }
+
+    public Integer getOperateStatus() {
+        return operateStatus;
+    }
+
+    public void setOperateStatus(Integer operateStatus) {
+        this.operateStatus = operateStatus;
+    }
+
+    public Integer getPackageId() {
+        return packageId;
+    }
+
+    public void setPackageId(Integer packageId) {
+        this.packageId = packageId;
     }
 }

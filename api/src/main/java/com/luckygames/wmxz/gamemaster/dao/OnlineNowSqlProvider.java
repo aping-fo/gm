@@ -16,12 +16,11 @@ public class OnlineNowSqlProvider {
         return sql;
     }
 
-    public String queryOnlineNowReport(OnlineNowSearchQuery query) {
+    public String searchPage(OnlineNowSearchQuery query) {
         StringBuilder sql = new StringBuilder("select po.* ")
                 .append(" from online_now po ")
                 .append(" inner join player_character pc on pc.char_id=po.char_id ")
                 .append(" where online=1 ");
-
         if (query.getChannelIds() != null && !query.getChannelIds().isEmpty()) {
             String ids = StringUtils.join(query.getChannelIds(), ",");
             sql.append(" and po.channel_id in (").append(ids).append(")  ");
@@ -31,10 +30,10 @@ public class OnlineNowSqlProvider {
             sql.append(" and po.server_id in (").append(ids).append(")  ");
         }
         if (StringUtils.isNotBlank(query.getStartDate())) {
-            sql.append(" and po.update_time >= #{startDate}  ");
+            sql.append(" and DATE_FORMAT(po.last_login_time,'%Y-%m-%d') >= #{startDate}  ");
         }
         if (StringUtils.isNotBlank(query.getEndDate())) {
-            sql.append(" and po.update_time < #{endDate}  ");
+            sql.append(" and DATE_FORMAT(po.last_login_time,'%Y-%m-%d') <= #{endDate}  ");
         }
         if (StringUtils.isNotBlank(query.getCharName())) {
             sql.append(" and ( pc.char_name like \"%\"#{charName}\"%\" ) ");

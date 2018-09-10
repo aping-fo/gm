@@ -7,6 +7,7 @@ import com.luckygames.wmxz.gamemaster.model.entity.PlayerActionDaily;
 import com.luckygames.wmxz.gamemaster.model.entity.RegisteredData;
 import com.luckygames.wmxz.gamemaster.model.view.base.Response;
 import com.luckygames.wmxz.gamemaster.model.view.request.CommonSearchQuery;
+import com.luckygames.wmxz.gamemaster.model.view.request.EquipmentSearchQuery;
 import com.luckygames.wmxz.gamemaster.service.AngleNumberAnalysisService;
 import com.luckygames.wmxz.gamemaster.service.PlayerActionDailyService;
 import com.luckygames.wmxz.gamemaster.service.PlayerActionLogService;
@@ -29,11 +30,16 @@ public class RegisterController extends BaseController {
     @Autowired
     private AngleNumberAnalysisService angleNumberAnalysisService;
 
+    //在线与注册
     @RequestMapping(value = "/statics", method = {RequestMethod.GET, RequestMethod.POST})
-    public Response registerStatics() {
-        return new Response("register/statics");
+    public Response registerStatics(EquipmentSearchQuery query) {
+        Page<RegisteredData> registeredDataPage = registeredDataService.searchPage(query);
+        return new Response("register/statics")
+                .request(query)
+                .data("equipmentCountList", registeredDataPage);
     }
 
+    //注册数
     @RequestMapping(value = "/statics_register", method = {RequestMethod.GET, RequestMethod.POST})
     public Response staticsRegister(CommonSearchQuery commonSearchQuery) {
         if (commonSearchQuery.getPageNum() == null) {
@@ -47,6 +53,7 @@ public class RegisterController extends BaseController {
                 .data("playerActionDailyList", playerActionDailyPage);
     }
 
+    //创角数
     @RequestMapping(value = "/statics_character", method = {RequestMethod.GET, RequestMethod.POST})
     public Response staticsCharacter(CommonSearchQuery commonSearchQuery) {
         if (commonSearchQuery.getPageNum() == null) {
@@ -62,22 +69,20 @@ public class RegisterController extends BaseController {
 
     //设备数
     @RequestMapping(value = "/statics_equipment", method = {RequestMethod.GET, RequestMethod.POST})
-    public Response staticsEquipment(CommonSearchQuery query) {
+    public Response staticsEquipment(EquipmentSearchQuery query) {
         Page<RegisteredData> registeredDataPage = registeredDataService.searchPage(query);
-
         return new Response("register/statics_equipment")
                 .request(query)
-                .data("equipmentCountList", registeredDataPage);
+                .data("list", registeredDataPage);
     }
 
     //创建数分析
     @RequestMapping(value = "/statics_character_analysis", method = {RequestMethod.GET, RequestMethod.POST})
     public Response staticsCharacterAnalysis(CommonSearchQuery query) {
         Page<AngleNumberAnalysis> angleNumberAnalysisPage = angleNumberAnalysisService.searchPage(query);
-
         return new Response("register/statics_character_analysis")
                 .request(query)
-                .data("angleNumberAnalysisList", angleNumberAnalysisPage);
+                .data("list", angleNumberAnalysisPage);
     }
 
     //保存设备数

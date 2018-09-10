@@ -5,7 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.luckygames.wmxz.gamemaster.dao.NewUserEntity;
 import com.luckygames.wmxz.gamemaster.dao.mapper.NewUserMapper;
 import com.luckygames.wmxz.gamemaster.model.entity.NewUser;
-import com.luckygames.wmxz.gamemaster.model.view.request.CommonSearchQuery;
+import com.luckygames.wmxz.gamemaster.model.view.request.NewUserSearchQuery;
 import com.luckygames.wmxz.gamemaster.service.base.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,11 +22,7 @@ public class NewUserServiceImpl extends BaseServiceImpl<NewUserEntity> implement
     }
 
     @Override
-    public Page<NewUser> searchPage(CommonSearchQuery query) {
-        if (query.getPageNum() == null) {
-            query.setPageNum(1);
-        }
+    public Page<NewUser> searchPage(NewUserSearchQuery query) {
         return PageHelper.startPage(query.getPageNum(), query.getPageSize()).doSelectPage(() -> NewUserMapper.searchPage(query));
-
     }
 }

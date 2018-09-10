@@ -19,4 +19,8 @@ public interface ChannelService extends BaseService<ChannelEntity> {
     long countChannles();
 
     Channel fixOpenDate(Long channelId, Date registerDate);
+
+    List<Channel> searchList();
+
+    List<Channel> searchListByServerId(Long serverId);
 }
